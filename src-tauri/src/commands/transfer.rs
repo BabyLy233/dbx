@@ -268,6 +268,7 @@ pub async fn cancel_transfer(transfer_id: String) -> Result<(), String> {
 /// Sort table names by foreign key dependency.
 /// `parents_first: true` → parent tables first (insert/export order).
 /// `parents_first: false` → child tables first (drop order).
+#[allow(dead_code)]
 #[tauri::command]
 pub async fn sort_tables_by_fk_dependency(
     state: tauri::State<'_, std::sync::Arc<AppState>>,
