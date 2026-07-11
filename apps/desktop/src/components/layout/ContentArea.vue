@@ -5,7 +5,7 @@ import { appendDebugLog, isDebugLoggingEnabled } from "@/lib/backend/debugLog";
 import { canReloadUnavailableDataTab } from "@/lib/table/tableDataRefresh";
 import type { CSSProperties } from "vue";
 import { useI18n } from "vue-i18n";
-import { Check, Columns3, EyeOff, Loader2, Search, GitBranch, BarChart3, TableProperties, ChevronDown, ChevronUp, Inbox, RefreshCcw, Timer, Wrench, Toolbox, ListChecks, Database, Download, Upload, X, Pin, Rows3, SquareDashed, Minus, Plus } from "@lucide/vue";
+import { Check, Columns3, Columns3Cog, EyeOff, Loader2, Search, GitBranch, BarChart3, TableProperties, ChevronDown, ChevronUp, Inbox, RefreshCcw, Timer, Wrench, Toolbox, ListChecks, Database, Download, Upload, X, Pin, Rows3, SquareDashed, Minus, Plus } from "@lucide/vue";
 import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
 import { Button } from "@/components/ui/button";
@@ -192,6 +192,7 @@ const columnVisibilitySearch = ref("");
 const columnVisibilityOptions = computed(() => dataGridRef.value?.filteredColumnVisibilityOptions(columnVisibilitySearch.value) ?? []);
 const dataGridRenderMode = computed(() => settingsStore.editorSettings.dataGridRenderMode);
 const dataGridSearchMode = computed(() => settingsStore.editorSettings.dataGridSearchMode);
+const columnWidthDensity = computed(() => settingsStore.editorSettings.columnWidthDensity);
 const tableFontSize = computed(() => settingsStore.editorSettings.tableFontSize);
 const redisKeyBrowserRef = ref<SearchableBrowserHandle>();
 
@@ -220,6 +221,10 @@ function setDataGridRenderMode(value: "canvas" | "dom") {
 
 function setDataGridSearchMode(value: DataGridSearchMode) {
   settingsStore.updateEditorSettings({ dataGridSearchMode: value });
+}
+
+function setColumnWidthDensity(value: "compact" | "standard" | "comfortable") {
+  settingsStore.updateEditorSettings({ columnWidthDensity: value });
 }
 
 function setTableFontSize(value: number) {
@@ -1058,6 +1063,24 @@ defineExpose({ focusSearch, refreshData, handleModRTarget, requestQueryEditorExe
                     </div>
                     <div class="flex items-center justify-between gap-3 px-3 py-1.5 text-xs">
                       <div class="min-w-0 flex items-center gap-2 font-medium">
+                        <Columns3Cog class="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                        <span>{{ t("grid.columnWidth") }}</span>
+                      </div>
+                      <div class="grid w-48 grid-cols-3 rounded-md border bg-muted/40 p-0.5">
+                        <button
+                          v-for="density in ['compact', 'standard', 'comfortable'] as const"
+                          :key="density"
+                          type="button"
+                          class="h-5 min-w-0 truncate whitespace-nowrap rounded-[5px] px-1.5 text-xs transition-colors"
+                          :class="columnWidthDensity === density ? 'bg-background font-semibold text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
+                          @click="setColumnWidthDensity(density)"
+                        >
+                          {{ t(`grid.columnWidth${density.charAt(0).toUpperCase()}${density.slice(1)}`) }}
+                        </button>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between gap-3 px-3 py-1.5 text-xs">
+                      <div class="min-w-0 flex items-center gap-2 font-medium">
                         <span class="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-[11px] font-semibold text-muted-foreground">A</span>
                         <span>{{ t("grid.tableFontSize") }}</span>
                       </div>
@@ -1448,6 +1471,24 @@ defineExpose({ focusSearch, refreshData, handleModRTarget, requestQueryEditorExe
                     </button>
                   </div>
                 </LightTooltip>
+              </div>
+              <div class="flex items-center justify-between gap-3 px-3 py-1.5 text-xs">
+                <div class="min-w-0 flex items-center gap-2 font-medium">
+                  <Columns3Cog class="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                  <span>{{ t("grid.columnWidth") }}</span>
+                </div>
+                <div class="grid w-48 grid-cols-3 rounded-md border bg-muted/40 p-0.5">
+                  <button
+                    v-for="density in ['compact', 'standard', 'comfortable'] as const"
+                    :key="density"
+                    type="button"
+                    class="h-5 min-w-0 truncate whitespace-nowrap rounded-[5px] px-1.5 text-xs transition-colors"
+                    :class="columnWidthDensity === density ? 'bg-background font-semibold text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
+                    @click="setColumnWidthDensity(density)"
+                  >
+                    {{ t(`grid.columnWidth${density.charAt(0).toUpperCase()}${density.slice(1)}`) }}
+                  </button>
+                </div>
               </div>
               <div class="flex items-center justify-between gap-3 px-3 py-1.5 text-xs">
                 <div class="min-w-0 flex items-center gap-2 font-medium">

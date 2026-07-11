@@ -9192,31 +9192,6 @@ const gridContextMenuItems = computed<ContextMenuItem[]>(() => {
             </Tooltip>
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
-                <Button variant="ghost" size="sm" :class="['data-grid-topbar-action-button h-5 shrink-0 text-xs px-1.5', compactDataGridToolbar ? 'data-grid-topbar-action-button--compact' : '']">
-                  <Columns3Cog class="data-grid-topbar-action-icon w-3 h-3" />
-                  <span class="data-grid-topbar-action-label" :class="{ 'data-grid-topbar-action-label--compact': compactDataGridToolbar }">{{ t("grid.columnWidth") }}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" class="w-36">
-                <DropdownMenuItem class="gap-2" :class="{ 'bg-primary/10 text-primary': columnWidthDensity === 'compact' }" @select="settingsStore.updateEditorSettings({ columnWidthDensity: 'compact' })">
-                  <Check v-if="columnWidthDensity === 'compact'" class="h-3.5 w-3.5" />
-                  <span v-else class="h-3.5 w-3.5" />
-                  {{ t("grid.columnWidthCompact") }}
-                </DropdownMenuItem>
-                <DropdownMenuItem class="gap-2" :class="{ 'bg-primary/10 text-primary': columnWidthDensity === 'standard' }" @select="settingsStore.updateEditorSettings({ columnWidthDensity: 'standard' })">
-                  <Check v-if="columnWidthDensity === 'standard'" class="h-3.5 w-3.5" />
-                  <span v-else class="h-3.5 w-3.5" />
-                  {{ t("grid.columnWidthStandard") }}
-                </DropdownMenuItem>
-                <DropdownMenuItem class="gap-2" :class="{ 'bg-primary/10 text-primary': columnWidthDensity === 'comfortable' }" @select="settingsStore.updateEditorSettings({ columnWidthDensity: 'comfortable' })">
-                  <Check v-if="columnWidthDensity === 'comfortable'" class="h-3.5 w-3.5" />
-                  <span v-else class="h-3.5 w-3.5" />
-                  {{ t("grid.columnWidthComfortable") }}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
                 <Button
                   variant="ghost"
                   size="sm"
